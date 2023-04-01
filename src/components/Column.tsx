@@ -13,9 +13,7 @@ interface ColumProps {
 }
 
 export default function Column({status, items, isDragging, handleDragging, handleUpdateList}: ColumProps){
-  const [searchTerms, setSearchTerms] = useState('')
   const [isDraggingOver, setIsDraggingOver] = useState(false)
-  const [cardItems, setCardItems] = useState<CardProps[]>(items)
 
   const handleDragEnter = () => {
     setIsDraggingOver(true)
@@ -37,18 +35,6 @@ export default function Column({status, items, isDragging, handleDragging, handl
     handleDragging(false)
     setIsDraggingOver(false)
   }
-  
-  const handleColumnSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerms(e.currentTarget.value)
-  }
-
-  useEffect(() => {
-    if(searchTerms.length > 0){
-      setCardItems(cardItems.filter(item => item.title.toLowerCase().includes(searchTerms.toLowerCase()))) 
-    }else{
-      setCardItems(items)
-    }
-  }, [searchTerms])
 
   return (
     <div 
@@ -63,12 +49,9 @@ export default function Column({status, items, isDragging, handleDragging, handl
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">{status.charAt(0).toUpperCase() + status.slice(1)}</h2>
-        <input className="bg-white border rounded-lg p-1" type="text" onInput={handleColumnSearch} />
-      </div>
+      <h2 className="text-2xl font-bold">{status.charAt(0).toUpperCase() + status.slice(1)}</h2>
       <div className="mt-4 flex flex-col gap-y-3" >
-        {cardItems.map(card => (
+        {items.map(card => (
           status === card.status &&
           <Card
             key={card.id} 
