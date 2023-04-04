@@ -5,4 +5,5 @@ export interface CardProps {
   title: string;
   content: string;
   status: Status;
+  isFavorite: boolean;
 }

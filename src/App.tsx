@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { data } from './assets/cards-data';
 import Column from './components/Column'
 import {CardProps, Status} from './interfaces'
+import FavoritesColumn from './components/FavoritesColumn';
 
 const typeStatus: Status[] = ['todo', 'doing', 'done']
 
@@ -10,6 +11,23 @@ function App() {
   const [listItems, setListItems] = useState<CardProps[]>(data);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredListItems, setFilteredListItems] = useState<CardProps[]>(data);
+
+  useEffect(() => {
+    setFilteredListItems(listItems)
+  }, [listItems])
+
+  useEffect(() => {
+    if(searchTerm.length){
+      const arrItems = listItems.filter(
+        item =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.content.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredListItems(arrItems)
+    }else{
+      setFilteredListItems(listItems)
+    }
+  }, [searchTerm])
 
   const handleDragging = (dragging: boolean) => setIsDragging(dragging);
 
@@ -27,19 +45,23 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    if(searchTerm.length){
-      const arrItems = listItems.filter(
-        item =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.content.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      console.log(filteredListItems)
-      setFilteredListItems(arrItems)
-    }else{
-      setFilteredListItems(listItems)
+  const handleFavoriting = (id: number) => {
+    const card = filteredListItems.find(item => item.id === id)
+
+    console.log(card)
+    if(card){
+      const isFavoriteBoolean = !card.isFavorite
+      console.log(card.isFavorite)
+      console.log(!card.isFavorite)
+      const tempItems = listItems.map(item => (
+        item.id === id ? {...item, isFavorite: isFavoriteBoolean} : item
+      ))
+      // console.log(tempItems)
+      
+      setListItems(tempItems)
     }
-  }, [searchTerm])
+  }
+
 
   return (
     <div className="h-screen bg-white text-black p-10 flex flex-col gap-y-5">
@@ -53,9 +75,6 @@ function App() {
           onChange={e => setSearchTerm(e.target.value)}
         />
       </div>
-        
-
-
       <div className='flex flex-1 gap-x-5'>
         {typeStatus.map(status => (
           <Column
@@ -66,8 +85,11 @@ function App() {
             isDragging={isDragging}
             handleDragging={handleDragging}
             handleUpdateList={handleUpdateList}
+            handleFavoriting={handleFavoriting}
           />
         ))}
+
+        <FavoritesColumn items={filteredListItems} handleDragging={handleDragging} handleFavoriting={handleFavoriting} />
       </div>
     </div>
   )

@@ -4,15 +4,16 @@ import clsx from "clsx";
 import { CardProps, Status } from "../interfaces";
 
 interface ColumProps {
-  status: Status;
   items: CardProps[];
+  status: Status;
 
   isDragging: boolean;
   handleDragging: (dragging: boolean) => void;
-  handleUpdateList: (id: number, status: Status) => void
+  handleUpdateList: (id: number, status: Status) => void;
+  handleFavoriting: (id: number) => void
 }
 
-export default function Column({status, items, isDragging, handleDragging, handleUpdateList}: ColumProps){
+export default function Column({items, status, isDragging, handleDragging, handleUpdateList, handleFavoriting}: ColumProps){
   const [isDraggingOver, setIsDraggingOver] = useState(false)
 
   const handleDragEnter = () => {
@@ -57,6 +58,7 @@ export default function Column({status, items, isDragging, handleDragging, handl
             key={card.id} 
             content={card} 
             handleDragging={handleDragging}
+            handleFavoriting={handleFavoriting}
           />
         ))}
       </div>
