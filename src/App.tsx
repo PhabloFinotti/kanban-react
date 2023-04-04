@@ -8,7 +8,6 @@ import FavoritesColumn from './components/FavoritesColumn';
 const typeStatus: Status[] = ['todo', 'doing', 'done']
 
 function App() {
-  const [isDragging, setIsDragging] = useState(false);
   const [listItems, setListItems] = useState<CardProps[]>(data);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredListItems, setFilteredListItems] = useState<CardProps[]>(data);
@@ -36,8 +35,6 @@ function App() {
       setFilteredListItems(listItems)
     }
   }, [searchTerm])
-
-  const handleDragging = (dragging: boolean) => setIsDragging(dragging);
 
   const handleUpdateList = (id: number, status: Status) => {
     let card = listItems.find(item => item.id === id)
