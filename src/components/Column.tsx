@@ -11,9 +11,12 @@ interface ColumProps {
   handleDragging: (dragging: boolean) => void;
   handleUpdateList: (id: number, status: Status) => void;
   handleFavoriting: (id: number) => void
+
+  handleIsModalOpen: (modalState: boolean) => void;
+  handleModalContent: (modalContent: CardProps) => void;
 }
 
-export default function Column({items, status, isDragging, handleDragging, handleUpdateList, handleFavoriting}: ColumProps){
+export default function Column({items, status, isDragging, handleDragging, handleUpdateList, handleFavoriting, handleIsModalOpen, handleModalContent}: ColumProps){
   const [isDraggingOver, setIsDraggingOver] = useState(false)
 
   const handleDragEnter = () => {
@@ -59,6 +62,9 @@ export default function Column({items, status, isDragging, handleDragging, handl
             content={card} 
             handleDragging={handleDragging}
             handleFavoriting={handleFavoriting}
+
+            handleIsModalOpen={handleIsModalOpen}
+            handleModalContent={handleModalContent}
           />
         ))}
       </div>

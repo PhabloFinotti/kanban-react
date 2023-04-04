@@ -6,9 +6,12 @@ interface Props {
 
   handleDragging: (dragging: boolean) => void;
   handleFavoriting: (id: number) => void;
+
+  handleIsModalOpen: (modalState: boolean) => void;
+  handleModalContent: (modalContent: CardProps) => void;
 }
 
-export default function FavoritesColumn({items, handleDragging, handleFavoriting}: Props){
+export default function FavoritesColumn({items, handleDragging, handleFavoriting, handleIsModalOpen, handleModalContent}: Props){
   return (
     <div 
     className="w-[350px] flex flex-col rounded-lg p-4 border-2 bg-gray-100 border-gray-200"
@@ -23,6 +26,9 @@ export default function FavoritesColumn({items, handleDragging, handleFavoriting
               
               handleDragging={handleDragging}
               handleFavoriting={handleFavoriting}
+              
+              handleIsModalOpen={handleIsModalOpen}
+              handleModalContent={handleModalContent}
             />
           ))}
       </div>

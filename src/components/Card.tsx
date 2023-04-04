@@ -1,14 +1,18 @@
 import {clsx} from 'clsx';
 import { CardProps } from '../interfaces';
 import {Star} from '@phosphor-icons/react'
+import { useState } from 'react';
 
 interface Props{
   content: CardProps;
   handleDragging: (dragging: boolean) => void;
   handleFavoriting: (id: number) => void;
+  
+  handleIsModalOpen: (modalState: boolean) => void;
+  handleModalContent: (modalContent: CardProps) => void;
 }
 
-export default function Card({content, handleDragging, handleFavoriting}: Props){
+export default function Card({content, handleDragging, handleFavoriting, handleIsModalOpen, handleModalContent}: Props){
   const starWeight = content.isFavorite ? 'fill' : undefined;
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
@@ -17,7 +21,12 @@ export default function Card({content, handleDragging, handleFavoriting}: Props)
   }
 
   const handleDragEnd = () => handleDragging(false)
-  
+
+  const handleClick = () => {
+    handleIsModalOpen(true)
+    handleModalContent(content)
+  }
+
   return (
     <div
       draggable="true"
@@ -25,6 +34,7 @@ export default function Card({content, handleDragging, handleFavoriting}: Props)
         
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onClick={handleClick}
     >
       <Star
         className='absolute top-2 right-2 cursor-pointer' 
