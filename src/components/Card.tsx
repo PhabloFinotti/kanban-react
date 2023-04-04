@@ -9,6 +9,7 @@ interface Props{
 }
 
 export default function Card({content, handleDragging, handleFavoriting}: Props){
+  const starWeight = content.isFavorite ? 'fill' : undefined;
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData('text', `${content.id}`)
@@ -25,23 +26,12 @@ export default function Card({content, handleDragging, handleFavoriting}: Props)
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      {
-        content.isFavorite ? 
-        (
-          <Star
-            className='absolute top-2 right-2 cursor-pointer' 
-            size={20} 
-            weight="fill"
-            onClick={() => handleFavoriting(content.id)}
-          />
-          ) : (
-          <Star
-            className='absolute top-2 right-2 cursor-pointer' 
-            size={20} 
-            onClick={() => handleFavoriting(content.id)}
-          />
-        )
-      }
+      <Star
+        className='absolute top-2 right-2 cursor-pointer' 
+        size={20} 
+        weight={starWeight}
+        onClick={() => handleFavoriting(content.id)}
+      />
       <h3 className="text-lg font-semibold mb-1">{content.title}</h3>
       <p>{content.content}</p>
     </div>
