@@ -5,14 +5,14 @@ import { useState } from 'react';
 
 interface Props{
   content: CardProps;
-  handleDragging: (dragging: boolean) => void;
-  handleFavoriting: (id: number) => void;
+  cardStyles?: string;
+  handleFavoriting: (e: React.MouseEvent<SVGSVGElement>, id: number) => void;
   
   handleIsModalOpen: (modalState: boolean) => void;
   handleModalContent: (modalContent: CardProps) => void;
 }
 
-export default function Card({content, handleFavoriting, handleIsModalOpen, handleModalContent}: Props){
+export default function Card({content, cardStyles = '', handleFavoriting, handleIsModalOpen, handleModalContent}: Props){
   const starWeight = content.isFavorite ? 'fill' : undefined;
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
@@ -25,10 +25,13 @@ export default function Card({content, handleFavoriting, handleIsModalOpen, hand
     handleModalContent(content)
   }
 
+  const DEFAULT_STYLE = "relative rounded-xl min-h-[100px] p-4 shadow flex flex-col justify-center transition hover:cursor-grab"
+  const cardFinalStyle = cardStyles || "bg-indigo-200 text-indigo-600 hover:bg-indigo-300 "
+
   return (
     <div
       draggable="true"
-      className="relative bg-indigo-200 text-indigo-600 rounded-xl min-h-[100px] p-4 shadow flex flex-col justify-center transition hover:bg-indigo-300 hover:cursor-grab"
+      className={`${cardFinalStyle}  ${DEFAULT_STYLE}`}
         
       onDragStart={handleDragStart}
       onClick={handleClick}
@@ -37,7 +40,7 @@ export default function Card({content, handleFavoriting, handleIsModalOpen, hand
         className='absolute top-2 right-2 cursor-pointer' 
         size={20} 
         weight={starWeight}
-        onClick={() => handleFavoriting(content.id)}
+        onClick={(e: React.MouseEvent<SVGSVGElement>) => handleFavoriting(e, content.id)}
       />
       <h3 className="text-lg font-semibold mb-1">{content.title}</h3>
       <p>{content.content}</p>

@@ -50,7 +50,8 @@ function App() {
     }
   }
 
-  const handleFavoriting = (id: number) => {
+  const handleFavoriting = (e: React.MouseEvent<SVGSVGElement>, id: number) => {
+    e.stopPropagation()
     const card = filteredListItems.find(item => item.id === id)
 
     if(card){
@@ -81,14 +82,20 @@ function App() {
           />
         </div>
         <div className='flex flex-1 gap-x-5'>
+          <FavoritesColumn
+            items={filteredListItems} 
+            handleFavoriting={handleFavoriting}
+
+            handleIsModalOpen={handleIsModalOpen}
+            handleModalContent={handleModalContent}
+          />
+
           {typeStatus.map(status => (
             <Column
               key={status} 
               status={status} 
               items={filteredListItems}  // Passar os itens filtrados
 
-              isDragging={isDragging}
-              handleDragging={handleDragging}
               handleUpdateList={handleUpdateList}
               handleFavoriting={handleFavoriting}
 
@@ -97,14 +104,6 @@ function App() {
             />
           ))}
 
-          <FavoritesColumn
-            items={filteredListItems} 
-            handleDragging={handleDragging} 
-            handleFavoriting={handleFavoriting}
-
-            handleIsModalOpen={handleIsModalOpen}
-            handleModalContent={handleModalContent}
-          />
         </div>
       </div>
     </>

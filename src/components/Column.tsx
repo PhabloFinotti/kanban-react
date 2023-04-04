@@ -8,7 +8,7 @@ interface ColumProps {
   status: Status;
 
   handleUpdateList: (id: number, status: Status) => void;
-  handleFavoriting: (id: number) => void
+  handleFavoriting: (e: React.MouseEvent<SVGSVGElement>, id: number) => void;
 
   handleIsModalOpen: (modalState: boolean) => void;
   handleModalContent: (modalContent: CardProps) => void;
